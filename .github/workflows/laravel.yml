@@ -42,13 +42,20 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Set up SSH
-      uses: webfactory/ssh-agent@v0.8.0
-      with:
-        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-    - name: Add SSH key passphrase
+    - name: Set up SSH and add SSH key passphrase
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        SSH_KEY_PASSWORD: ${{ secrets.SSH_KEY_PASSWORD }}
       run: |
-        echo "${{ secrets.SSH_KEY_PASSWORD }}" | ssh-add -
+        mkdir -p ~/.ssh
+        echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        sshpass -p "$SSH_KEY_PASSWORD" ssh-add ~/.ssh/id_rsa
+        # Configuring known hosts if needed
+        touch ~/.ssh/config
+        ssh-keyscan github.com >> ~/.ssh/config
+        # You can add more hostnames if necessary
+        chmod 644 ~/.ssh/config
 
 
 
