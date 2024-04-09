@@ -2,6 +2,10 @@ name: Deploy
 
 on:
   workflow_dispatch:
+      inputs:
+        tag:
+          description: 'Docker image tag'
+          required: true
 
 jobs:
   deploy:
