@@ -1,0 +1,28 @@
+name: Deploy
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      
+      - name: Connect to target server
+        uses: appleboy/ssh-action@master
+        with:
+          host: app-web527358.westeurope.cloudapp.azure.com
+          username: admuser
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Pull latest Docker image
+        run: docker pull raeckelboomp/t-nsa-800_sample-app:latest
+      
+      - name: Copy docker-compose.yml to server
+        run: scp -o StrictHostKeyChecking=no docker-compose.yml admuser@app-web527358.westeurope.cloudapp.azure.com:/app/docker-compose.yml
+      
+      - name: Restart containers with Docker Compose
+        run: ssh -o StrictHostKeyChecking=no admuser@app-web527358.westeurope.cloudapp.azure.com "cd /app && docker-compose up -d"
