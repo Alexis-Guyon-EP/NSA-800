@@ -42,22 +42,13 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Set up SSH and add SSH key passphrase
-      env:
-        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-        SSH_KEY_PASSWORD: ${{ secrets.SSH_KEY_PASSWORD }}
-      run: |
-        mkdir -p ~/.ssh
-        echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
-        chmod 600 ~/.ssh/id_rsa
-        eval $(ssh-agent)
-        sshpass -p "$SSH_KEY_PASSWORD" ssh-add ~/.ssh/id_rsa
-        # Configuring known hosts if needed
-        touch ~/.ssh/config
-        ssh-keyscan github.com >> ~/.ssh/config
-        # You can add more hostnames if necessary
-        chmod 644 ~/.ssh/config
-
+    - name: Connect to target server
+      uses: appleboy/ssh-action@master
+      with:
+          host: app-web527358.westeurope.cloudapp.azure.com
+          username: admuser
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          passphrase: ${{ secrets.SSH_KEY_PASSWORD }}
 
 
 
