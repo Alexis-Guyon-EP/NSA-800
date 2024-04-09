@@ -24,7 +24,7 @@ jobs:
           passphrase: ${{ secrets.SSH_KEY_PASSWORD }}
 
       - name: Pull latest Docker image
-        run: docker pull raeckelboomp/t-nsa-800_sample-app:latest
+        run: docker pull raeckelboomp/t-nsa-800_sample-app:${{ github.event.inputs.tag }}
       
       - name: Copy docker-compose.yml to server
         run: scp -o StrictHostKeyChecking=no docker-compose.yml admuser@app-web527358.westeurope.cloudapp.azure.com:/app/docker-compose.yml
