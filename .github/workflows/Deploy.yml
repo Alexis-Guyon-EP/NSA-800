@@ -17,6 +17,7 @@ jobs:
           host: app-web527358.westeurope.cloudapp.azure.com
           username: admuser
           key: ${{ secrets.SSH_PRIVATE_KEY }}
+          passphrase: ${{ secrets.PASSPHRASE }}
 
       - name: Pull latest Docker image
         run: docker pull raeckelboomp/t-nsa-800_sample-app:latest
