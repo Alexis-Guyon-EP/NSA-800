@@ -55,5 +55,6 @@ jobs:
 
     - name: Deploy to server
       run: |
-        git pull && composer install --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist && echo 'ok'
+        git pull && composer install --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist && php artisan config:clear && php artisan migrate --force
+
 
