@@ -55,4 +55,4 @@ jobs:
 
     - name: Deploy to server
       run: |
-        cd && cd .ssh && ls && ssh -i ~/.ssh/id_rsa admuser@app-web527358.westeurope.cloudapp.azure.com 'cd /home/admuser/sample-app && git pull && composer install --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist && php artisan migrate --force'
+        ls
