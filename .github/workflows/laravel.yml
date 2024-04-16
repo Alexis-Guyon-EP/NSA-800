@@ -62,7 +62,13 @@ jobs:
           username: admuser
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           passphrase: ${{ secrets.SSH_KEY_PASSWORD }}
-          
+
+    - name: Replace environment variable in .env
+      run: |
+        sed -i "s/DB_HOST=127.0.0.1/DB_HOST=localhost/g" .env
+      env:
+        NEW_VARIABLE: ${{ secrets.NEW_VARIABLE }}
+
     - name: Deploy to server
       run: |
           git pull && composer install --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist && php artisan config:clear && php artisan config:cache && php artisan key:generate && php artisan migrate --force
