@@ -16,6 +16,9 @@ jobs:
         uses: actions/checkout@v2
         with:
           ref: 'master'
+
+      - name: List directory
+        run: ls
       
       - name: Connect to target server
         uses: appleboy/ssh-action@master
