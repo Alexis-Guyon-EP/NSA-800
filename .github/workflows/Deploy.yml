@@ -14,6 +14,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
+        with:
+          ref: 'master'
       
       - name: Connect to target server
         uses: appleboy/ssh-action@master
@@ -34,7 +36,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           passphrase: ${{ secrets.SSH_KEY_PASSWORD }}
           source: docker-compose.yml
-          target: "/app/docker-compose.yml"
+          target: /app/docker-compose.yml
         
       - name: Restart containers with Docker Compose
         uses: appleboy/ssh-action@master
