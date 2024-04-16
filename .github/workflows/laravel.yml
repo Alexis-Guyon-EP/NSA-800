@@ -16,7 +16,7 @@ jobs:
         image: mysql:5.7
         env:
           MYSQL_USER: username
-          MYSQL_PASSWORD: passwd
+          MYSQL_PASSWORD: secret
           MYSQL_DATABASE: db_name
           MYSQL_ROOT_PASSWORD: passwd
           DB_PORT: 3306
