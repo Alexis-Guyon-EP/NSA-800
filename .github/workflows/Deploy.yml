@@ -45,7 +45,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           passphrase: ${{ secrets.SSH_KEY_PASSWORD }}
           source: "deploy.tar"
-          target: /app
+          target: /home/admuser/app
         
       - name: Restart containers with Docker Compose
         uses: appleboy/ssh-action@master
