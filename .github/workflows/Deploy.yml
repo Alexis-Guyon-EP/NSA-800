@@ -46,6 +46,13 @@ jobs:
           passphrase: ${{ secrets.SSH_KEY_PASSWORD }}
           source: "deploy.tar"
           target: /home/admuser/app
+
+      - name: Untar the file and delete temp files.
+        run: |
+          tar xvf deploy.tar
+          cp ./temp/docker-compose.yaml docker-compose.yaml
+          rm -r ./temp
+          rm deploy.tar
         
       - name: Restart containers with Docker Compose
         uses: appleboy/ssh-action@master
@@ -55,5 +62,5 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           passphrase: ${{ secrets.SSH_KEY_PASSWORD }}
           script: |
-            cd /app
+            cd /home/admuser/app
             docker-compose up -d
