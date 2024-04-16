@@ -27,7 +27,14 @@ jobs:
         run: docker pull raeckelboomp/t-nsa-800_sample-app:${{ github.event.inputs.tag }}
       
       - name: Copy docker-compose.yml to server
-        run: scp -o StrictHostKeyChecking=no docker-compose.yml admuser@app-web527358.westeurope.cloudapp.azure.com:/app/docker-compose.yml
-      
+        uses: appleboy/ssh-action@master
+        with:
+          host: app-web527358.westeurope.cloudapp.azure.com
+          username: admuser
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          passphrase: ${{ secrets.SSH_KEY_PASSWORD }}
+          source: docker-compose.yml
+          target: "app-web527358.westeurope.cloudapp.azure.com:/app/docker-compose.yml"
+
       - name: Restart containers with Docker Compose
         run: ssh -o StrictHostKeyChecking=no admuser@app-web527358.westeurope.cloudapp.azure.com "cd /app && docker-compose up -d"
