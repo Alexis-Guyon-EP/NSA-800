@@ -28,8 +28,11 @@ jobs:
       - name: Pull latest Docker image
         run: docker pull raeckelboomp/t-nsa-800_sample-app:${{ github.event.inputs.tag }}
 
-      - name: List directory
-        run: ls
+      - name: List directory and cat docker-compose
+        run: |
+          pwd
+          ls
+          cat docker-compose.yaml
 
       - name: Prepare the docker-compose tar.
         run: |
