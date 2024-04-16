@@ -49,6 +49,7 @@ jobs:
 
       - name: Untar the file and delete temp files.
         run: |
+          rm docker-compose.yaml
           tar xvf deploy.tar
           cp ./temp/docker-compose.yaml docker-compose.yaml
           rm -r ./temp
