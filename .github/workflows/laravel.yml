@@ -55,17 +55,14 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Connect to target server and deploy
+    - name: Connect to target server
       uses: appleboy/ssh-action@master
       with:
-        host: app-web527358.westeurope.cloudapp.azure.com
-        username: admuser
-        key: ${{ secrets.SSH_PRIVATE_KEY }}
-        passphrase: ${{ secrets.SSH_KEY_PASSWORD }}
-        script: |
-          git pull
-          composer install --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
-          php artisan config:clear
-          php artisan config:cache
-          php artisan key:generate
-          php artisan migrate --force
+          host: app-web527358.westeurope.cloudapp.azure.com
+          username: admuser
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          passphrase: ${{ secrets.SSH_KEY_PASSWORD }}
+
+    - name: Deploy to server
+      run: |
+          git pull && composer install --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist && php artisan config:clear && php artisan config:cache && php artisan key:generate && php artisan migrate --force
