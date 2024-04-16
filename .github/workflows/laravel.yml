@@ -63,6 +63,9 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           passphrase: ${{ secrets.SSH_KEY_PASSWORD }}
 
+    - name: Create environment file
+      run: cp .env.example .env
+      
     - name: Deploy to server
       run: |
           git pull && composer install --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist && php artisan config:clear && php artisan config:cache && php artisan key:generate && php artisan config:clear && php artisan migrate --force
