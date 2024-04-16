@@ -36,12 +36,11 @@ jobs:
     - name: Install dependencies
       run: composer install --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
 
+    - name: Create environment file
+      run: cp .env.example .env
+
     - name: Generate application key
       run: php artisan key:generate
-
-    - name: Verify MySQL connection
-      run: |
-        mysql --host app-database763122.westeurope.cloudapp.azure.com --port 33306 -u username -p passwd -e "SHOW DATABASES"
 
     - name: Run tests
       run: echo 'oui'
