@@ -55,17 +55,18 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Create environment file
-      run: cp .env.example .env
-
-    - name: Connect to target server
+    - name: Connect to target server and deploy
       uses: appleboy/ssh-action@master
       with:
-          host: app-web527358.westeurope.cloudapp.azure.com
-          username: admuser
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          passphrase: ${{ secrets.SSH_KEY_PASSWORD }}
+        host: app-web527358.westeurope.cloudapp.azure.com
+        username: admuser
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        passphrase: ${{ secrets.SSH_KEY_PASSWORD }}
+        script: |
+          git pull
+          composer install --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+          php artisan config:clear
+          php artisan config:cache
+          php artisan key:generate
+          php artisan migrate --force
 
-    - name: Deploy to server
-      run: |
-          git pull && composer install --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist && php artisan config:clear && php artisan config:cache && php artisan key:generate && php artisan migrate --force
