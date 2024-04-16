@@ -11,6 +11,19 @@ jobs:
     name: Build and Test
     runs-on: ubuntu-latest
 
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_USER: username
+          MYSQL_PASSWORD: secret
+          MYSQL_DATABASE: db_name
+          MYSQL_ROOT_PASSWORD: passwd
+          DB_PORT: 3306
+        ports:
+          - 33306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
@@ -28,6 +41,10 @@ jobs:
 
     - name: Generate application key
       run: php artisan key:generate
+
+    - name: Verify MySQL connection
+      run: |
+        mysql --host 127.0.0.1 --port 33306 -uuser -psecret -e "SHOW DATABASES"
 
     - name: Run tests
       run: echo 'oui'
@@ -50,12 +67,6 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           passphrase: ${{ secrets.SSH_KEY_PASSWORD }}
 
-
-
-
     - name: Deploy to server
       run: |
-          git pull && composer install --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist && php artisan config:clear && php artisan config:cache && php artisan key:generate && php artisan migrate --force
-
-
-
+          git pull && composer install --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist && php artisan config:clear && php artisan config:cache && php artisan migrate --force
