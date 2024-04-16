@@ -55,6 +55,9 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
+    - name: Create environment file
+      run: cp .env.example .env
+
     - name: Connect to target server
       uses: appleboy/ssh-action@master
       with:
