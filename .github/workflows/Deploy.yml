@@ -63,4 +63,5 @@ jobs:
           passphrase: ${{ secrets.SSH_KEY_PASSWORD }}
           script: |
             cd /home/admuser/app
+            cat docker-compose.yaml
             docker-compose up -d
