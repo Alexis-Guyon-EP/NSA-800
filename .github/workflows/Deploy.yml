@@ -57,6 +57,7 @@ jobs:
           cp ./temp/docker-compose.yaml docker-compose.yaml
           rm -r ./temp
           rm deploy.tar
+          ls
         
       - name: Restart containers with Docker Compose
         uses: appleboy/ssh-action@master
