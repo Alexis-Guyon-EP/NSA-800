@@ -35,6 +35,12 @@ jobs:
           passphrase: ${{ secrets.SSH_KEY_PASSWORD }}
           source: docker-compose.yml
           target: "app-web527358.westeurope.cloudapp.azure.com:/app/docker-compose.yml"
-
+        
       - name: Restart containers with Docker Compose
-        run: "cd /app && docker-compose up -d"
+        uses: appleboy/ssh-action@master
+        with:
+          host: app-web527358.westeurope.cloudapp.azure.com
+          username: admuser
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          passphrase: ${{ secrets.SSH_KEY_PASSWORD }}
+          script: "cd /app && docker-compose up -d"
