@@ -30,6 +30,9 @@ jobs:
 
       - name: Pull latest Docker image
         run: docker pull raeckelboomp/t-nsa-800_sample-app:${{ github.event.inputs.tag }}
+
+      - name: List directory
+        run: ls
       
       - name: Copy docker-compose.yaml to server
         uses: appleboy/scp-action@master
