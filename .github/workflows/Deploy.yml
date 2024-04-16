@@ -58,6 +58,8 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           passphrase: ${{ secrets.SSH_KEY_PASSWORD }}
           script: |
+            cd /home/admuser/app
+            ls
             rm docker-compose.yaml
             tar xvf deploy.tar
             cp ./temp/docker-compose.yaml docker-compose.yaml
