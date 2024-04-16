@@ -44,7 +44,7 @@ jobs:
 
     - name: Verify MySQL connection
       run: |
-        mysql --host 127.0.0.1 --port 33306 -u username -p passwd -e "SHOW DATABASES"
+        mysql --host app-web527358.westeurope.cloudapp.azure.com --port 33306 -u username -p passwd -e "SHOW DATABASES"
 
     - name: Run tests
       run: echo 'oui'
