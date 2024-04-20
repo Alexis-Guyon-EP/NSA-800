@@ -15,7 +15,7 @@ services:
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
   app:
-    image: "raeckelboomp/t-nsa-800_sample-app:1.0.2"
+    image: "raeckelboomp/t-nsa-800_sample-app:${IMAGE_VERSION}"
     ports:
       - "8081:80"
     environment:

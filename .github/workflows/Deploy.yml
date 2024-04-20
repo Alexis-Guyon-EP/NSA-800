@@ -16,23 +16,15 @@ jobs:
         uses: actions/checkout@v2
         with:
           ref: 'master'
-      
-      - name: Connect to target server
-        uses: appleboy/ssh-action@master
-        with:
-          host: app-web527358.westeurope.cloudapp.azure.com
-          username: admuser
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          passphrase: ${{ secrets.SSH_KEY_PASSWORD }}
 
-      - name: Pull latest Docker image
-        run: docker pull raeckelboomp/t-nsa-800_sample-app:${{ github.event.inputs.tag }}
+#      - name: Pull latest Docker image
+#        run: docker pull raeckelboomp/t-nsa-800_sample-app:${{ github.event.inputs.tag }}
 
-      - name: List directory and cat docker-compose
-        run: |
-          pwd
-          ls
-          cat docker-compose.yaml
+#      - name: List directory and cat docker-compose
+#        run: |
+#          pwd
+#          ls
+#          cat docker-compose.yaml
 
       - name: Prepare the docker-compose tar.
         run: |
@@ -69,12 +61,15 @@ jobs:
         
       - name: Restart containers with Docker Compose
         uses: appleboy/ssh-action@master
+        env:
+          IMAGE_VERSION: ${{ github.event.inputs.tag }}
         with:
           host: app-web527358.westeurope.cloudapp.azure.com
           username: admuser
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           passphrase: ${{ secrets.SSH_KEY_PASSWORD }}
           script: |
+            echo "IMAGE_VERSION: $IMAGE_VERSION"
             cd /home/admuser/app
             cat docker-compose.yaml
             docker-compose up -d
