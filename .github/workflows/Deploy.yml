@@ -68,8 +68,10 @@ jobs:
           username: admuser
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           passphrase: ${{ secrets.SSH_KEY_PASSWORD }}
-          script: |
-            IMAGE_VERSION=${{ github.event.inputs.tag }}
+          script: |   
+            rm .env     
+            touch .env
+            echo VARIABLE=${{ github.event.inputs.tag }} >> .env
             echo "IMAGE_VERSION: $IMAGE_VERSION"
             cd /home/admuser/app
             cat docker-compose.yaml
