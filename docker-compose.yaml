@@ -30,6 +30,7 @@ services:
       DB_PASSWORD: app_password
     depends_on:
       - db
+    command: sh -c "php artisan migrate --force"
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.app.rule=Host(`localhost`)"
