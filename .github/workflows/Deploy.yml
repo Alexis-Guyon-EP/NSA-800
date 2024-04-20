@@ -15,16 +15,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
         with:
-          ref: 'master'
-
-#      - name: Pull latest Docker image
-#        run: docker pull raeckelboomp/t-nsa-800_sample-app:${{ github.event.inputs.tag }}
-
-#      - name: List directory and cat docker-compose
-#        run: |
-#          pwd
-#          ls
-#          cat docker-compose.yaml
+          ref: ${{ github.event.inputs.tag }}
 
       - name: Prepare the docker-compose tar.
         run: |
@@ -51,13 +42,11 @@ jobs:
           passphrase: ${{ secrets.SSH_KEY_PASSWORD }}
           script: |
             cd /home/admuser/app
-            ls
             rm docker-compose.yaml
             tar xvf deploy.tar
             cp ./temp/docker-compose.yaml docker-compose.yaml
             rm -r ./temp
             rm deploy.tar
-            ls
         
       - name: Restart containers with Docker Compose
         uses: appleboy/ssh-action@master
@@ -69,12 +58,8 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           passphrase: ${{ secrets.SSH_KEY_PASSWORD }}
           script: |
-            pwd
-            ls
             cd /home/admuser/app
             rm .env     
             touch .env
             echo IMAGE_VERSION=${{ github.event.inputs.tag }} >> .env
-            echo "IMAGE_VERSION: $IMAGE_VERSION"
-            cat docker-compose.yaml
             docker-compose up -d
