@@ -8,6 +8,8 @@ on:
 jobs:
   get-latest-tag:
     runs-on: ubuntu-latest
+    outputs:
+      output1: ${{ steps.latest_tag.outputs.latest_tag }}
     steps:
       - name: Get latest tag/version
         id: latest_tag
@@ -26,7 +28,7 @@ jobs:
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: "raeckelboomp/t-nsa-800_sample-app:${{ needs.get-latest-tag.outputs.latest_tag }}"
+          image-ref: "raeckelboomp/t-nsa-800_sample-app:${{ needs.get-latest-tag.outputs.output1 }}"
           format: 'table'
           ignore-unfixed: true
           vuln-type: 'os,library'
