@@ -1,0 +1,32 @@
+name: Scheduled Docker Image Scan
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * *'  # Schedule the workflow to run daily at midnight
+
+jobs:
+  get-latest-tag:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get latest tag/version
+        id: latest_tag
+        run: |
+          latest_tag=$(curl -s "https://api.github.com/repos/Alexis-Guyon-EP/NSA-800/tags" | jq -r '.[0].name')
+          echo "::set-output name=latest_tag::$latest_tag"
+
+  scan-docker-image:
+    runs-on: ubuntu-latest
+    needs: get-latest-tag
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: "raeckelboomp/t-nsa-800_sample-app:${{ needs.get-latest-tag.outputs.latest_tag }}"
+          format: 'table'
+          ignore-unfixed: true
+          vuln-type: 'os,library'
+          severity: 'CRITICAL,HIGH'
