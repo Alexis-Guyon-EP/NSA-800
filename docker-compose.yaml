@@ -30,7 +30,7 @@ services:
       DB_PASSWORD: app_password
     depends_on:
       - db
-    command: sh -c "php artisan migrate --force"
+    command: sh -c "sleep 10 && php /var/www/html/artisan migrate && apache2-foreground"
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.app.rule=Host(`localhost`)"
