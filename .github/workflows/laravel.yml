@@ -43,7 +43,7 @@ jobs:
       run: php artisan key:generate
 
     - name: Run tests
-      run: echo 'oui'
+      run: echo 'php artisan test'
 
   deploy:
     name: Deploy to production
@@ -65,4 +65,4 @@ jobs:
       
     - name: Deploy to server
       run: |
-          git pull && composer install --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist && php artisan config:clear && php artisan config:cache && php artisan key:generate && php artisan config:clear && php artisan migrate --force
+          git pull && composer install --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist && php artisan config:clear && php artisan config:cache && php artisan key:generate && php artisan config:clear && db:seed
